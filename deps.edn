@@ -1,0 +1,20 @@
+{:deps
+ {org.clojure/clojure {:mvn/version "1.11.1"}
+  org.clojure/clojurescript {:mvn/version "1.10.914"}
+  langgraph-clj/langgraph-clj {:local/root "../../../orgs/kotoba-lang/langgraph-clj"}
+  kotoba-lang/industry {:local/root "../../../orgs/kotoba-lang/industry"}
+  kotoba-lang/occupation {:local/root "../../../orgs/kotoba-lang/occupation"}}
+
+ :aliases
+ {:test
+  {:extra-paths ["test"]
+   :extra-deps {io.github.cognitect-labs/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                                                       :git/sha "eb5f1d0e4fdb3e69cffb1a27fa8d2e48c6e14ffa"}}
+   :main-opts ["-m" "cognitect.test-runner"]}
+
+  :lint
+  {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2024.03.13"}}
+   :main-opts ["-m" "clj-kondo.core" "--lint" "src" "test"]}
+
+  :run
+  {:main-opts ["-m" "clinicops.sim"]}}}

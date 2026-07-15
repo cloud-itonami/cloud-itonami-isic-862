@@ -1,0 +1,17 @@
+# Clojure / nbb
+.cpcache/
+.nrepl-port
+target/
+.lsp/
+node_modules/
+dist/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git/
