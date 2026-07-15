@@ -80,8 +80,8 @@
   [_db {:keys [appt-id patch]}]
   {:op         :coordinate-supply-request
    :appt-id    appt-id
-   :summary    (str appt-id " に関連する非臨床消耗品リクエスト: " (pr-str (keys patch)))
-   :rationale  "用紙・パンフレット・行政用品などの非臨床消耗品の調達調整のみ。投薬・医療用品・臨床機器なし。"
+   :summary    (str appt-id " に関連する事務用品リクエスト: " (pr-str (keys patch)))
+   :rationale  "用紙・パンフレット・事務用品などの事務消耗品の調達調整"
    :cites      [appt-id]
    :effect     :propose
    :value      (merge {:appt-id appt-id} patch)

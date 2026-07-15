@@ -14,8 +14,7 @@
   7. request-approval: escalate to human for sign-off"
   (:require [clinicops.advisor :as advisor]
             [clinicops.governor :as governor]
-            [clinicops.phase :as phase]
-            [clinicops.store :as store]))
+            [clinicops.phase :as phase]))
 
 (defn make-graph
   "Create a demo state graph for the clinic operations flow."
@@ -42,11 +41,9 @@
 
         ;; Step 2: advise
         proposal (advisor/advise advisor-inst store-inst request)
-        advise-result (assoc intake-result :proposal proposal :status :advice-drafted)
 
         ;; Step 3: govern
         gov-check (governor/check-proposal governor-inst proposal store-inst)
-        govern-result (assoc advise-result :gov-check gov-check :status :governed)
 
         ;; Step 4: decide
         {:keys [held? escalate?]} gov-check

@@ -22,7 +22,8 @@
   (-appointment [_ appt-id] (get appointments appt-id))
   (-provider [_ provider-id] (get providers provider-id))
   (-append-audit [this event]
-    (update this :audit-log conj (merge event {:timestamp (System/currentTimeMillis)})))
+    (update this :audit-log conj (merge event {:timestamp #?(:clj (System/currentTimeMillis)
+                                                              :cljs (.now js/Date))})))
   (-audit-log [_] audit-log))
 
 (defn appointment

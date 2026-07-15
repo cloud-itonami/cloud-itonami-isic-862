@@ -146,15 +146,15 @@
   territory is a HARD, PERMANENT block. Never trusts the advisor's own
   framing."
   [proposal]
-  (when-not (allowed-ops (:op proposal))
-    (return [{:rule :op-not-allowed
-              :detail (str "Op " (pr-str (:op proposal)) " is not in the closed allowlist")}]))
-
-  (let [blob (text-blob proposal)]
-    (when (some (fn [term] (str/includes? blob term))
-                scope-excluded-terms)
-      [{:rule :scope-exclusion
-        :detail "Proposal content touches permanently out-of-scope clinical/patient-care territory"}])))
+  (or
+    (when-not (allowed-ops (:op proposal))
+      [{:rule :op-not-allowed
+        :detail (str "Op " (pr-str (:op proposal)) " is not in the closed allowlist")}])
+    (let [blob (text-blob proposal)]
+      (when (some (fn [term] (str/includes? blob term))
+                  scope-excluded-terms)
+        [{:rule :scope-exclusion
+          :detail "Proposal content touches permanently out-of-scope clinical/patient-care territory"}]))))
 
 ;; ===== Governor =====
 
@@ -164,7 +164,7 @@
 (defn check-proposal
   "Run all three HARD checks + escalation gates on a proposal.
   Returns {:held? false} if all clear, or {:held? true :violations [..]} if blocked."
-  [governor proposal store]
+  [_governor proposal store]
   (let [violations (concat
                      (appointment-unverified-violations proposal store)
                      (effect-not-propose-violations proposal)

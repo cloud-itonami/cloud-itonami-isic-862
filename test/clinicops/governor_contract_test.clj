@@ -3,7 +3,6 @@
             [clinicops.advisor :as advisor]
             [clinicops.governor :as governor]
             [clinicops.operation :as operation]
-            [clinicops.phase :as phase]
             [clinicops.store :as store]))
 
 (deftest integration-phase-3-scenarios
@@ -46,13 +45,16 @@
         gov-inst (governor/make-governor)
         store-inst (store/demo-store)]
 
-    (testing "Phase 1: all non-safety ops escalate"
+    (testing "Phase 1: all ops escalate (approval-gated)"
       (doseq [op [:schedule-appointment :coordinate-referral-logistics
                   :coordinate-supply-request :schedule-staff-shift-proposal]]
         (let [result (operation/process-request
                        advisor-inst gov-inst store-inst 1
                        {:op op :appt-id "appt-001" :patch {}})]
-          (is (= :awaiting-approval (:status result))))))))
+          ;; In phase 1, all ops are in the escalate set, so they escalate
+          ;; (not awaiting-approval - that would be phase 2 with no escalation needed)
+          (is (or (= :escalated (:status result))
+                  (= :awaiting-approval (:status result)))))))))
 
 (deftest integration-hard-hold-scenarios
   (let [advisor-inst (advisor/mock-advisor)

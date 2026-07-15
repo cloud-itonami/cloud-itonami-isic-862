@@ -6,7 +6,6 @@
   (:require [clinicops.advisor :as advisor]
             [clinicops.governor :as governor]
             [clinicops.operation :as operation]
-            [clinicops.phase :as phase]
             [clinicops.store :as store]))
 
 (defn demo-scenario
@@ -92,7 +91,6 @@
 #?(:cljs
    (do
      (defn ^:async main []
-       (-main)
-       (System/exit 0))
+       (-main))
      (.then (js/Promise.resolve)
             (fn [] (main)))))
