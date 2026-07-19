@@ -1,51 +1,10 @@
-{:blueprint/id "862"
- :blueprint/title "Medical and dental practice activities — outpatient clinic coordination actor"
- :blueprint/domain "ISIC-862"
- :blueprint/type :actor
- :blueprint/runtime :langgraph-clj
- :blueprint/status :implemented
- :blueprint/description
- "A langgraph-clj StateGraph actor for outpatient clinic (doctor/dentist office) back-office operations coordination. This is an **administrative/facility coordination actor only** — it has no clinical authority or decision-making power whatsoever."
- :blueprint/scope
- [:appointment-scheduling-logistics
-  :referral-coordination-logistics
-  :non-clinical-supply-coordination
-  :administrative-staff-shift-proposals
-  :facility-safety-flagging]
- :blueprint/exclusions
- [:clinical-diagnosis
-  :treatment-decisions
-  :medication-administration
-  :patient-assessment
-  :clinical-procedures
-  :triage-priority-decisions
-  :clinical-staffing-adequacy
-  :patient-safety-concerns
-  :end-of-life-decisions
-  :clinical-authority-overrides]
- :blueprint/operations
- [{:op :schedule-appointment
-   :domain :logistics
-   :effect :propose}
-  {:op :coordinate-referral-logistics
-   :domain :logistics
-   :effect :propose}
-  {:op :coordinate-supply-request
-   :domain :logistics
-   :effect :propose}
-  {:op :schedule-staff-shift-proposal
-   :domain :logistics
-   :effect :propose}
-  {:op :flag-safety-concern
-   :domain :safety
-   :effect :propose
-   :always-escalate? true}]
- :blueprint/governor-checks 3
- :blueprint/phases 4
- :blueprint/modules
- {:store "clinicops.store — MemStore, string-keyed appointment/provider directory, append-only audit ledger"
-  :advisor "clinicops.advisor — mock + real-LLM seam for appointment/referral/supply/shift/safety operations"
-  :governor "clinicops.governor — independent scope-exclusion and resource-verification gate"
-  :operation "clinicops.operation — langgraph-clj StateGraph: intake → advise → govern → decide → commit | hold | request-approval"
-  :phase "clinicops.phase — 0→3 rollout: read-only → assisted-logistics → assisted-coordination → supervised-auto"
-  :sim "clinicops.sim — demo driver"}}
+{:itonami.blueprint/id "cloud-itonami-isic-862"
+ :itonami.blueprint/name "Medical and Dental Practice Activities - Outpatient Clinic Coordination"
+ :itonami.blueprint/isic-rev4 "862"
+ :itonami.blueprint/domain :services/outpatient-clinic-coordination
+ :itonami.blueprint/social-impact [:operational-efficiency :accessibility :staff-coordination :facility-safety]
+ :itonami.blueprint/governor :clinicops-governor
+ :itonami.blueprint/robotics false
+ :itonami.blueprint/required-technologies [:identity :forms :dmn :bpmn :audit-ledger]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented}
