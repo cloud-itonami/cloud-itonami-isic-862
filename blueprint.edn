@@ -2,9 +2,35 @@
  :itonami.blueprint/name "Medical and Dental Practice Activities - Outpatient Clinic Coordination"
  :itonami.blueprint/isic-rev4 "862"
  :itonami.blueprint/domain :services/outpatient-clinic-coordination
+ :itonami.blueprint/license "AGPL-3.0-or-later"
  :itonami.blueprint/social-impact [:operational-efficiency :accessibility :staff-coordination :facility-safety]
  :itonami.blueprint/governor :clinicops-governor
  :itonami.blueprint/robotics false
  :itonami.blueprint/required-technologies [:identity :forms :dmn :bpmn :audit-ledger]
  :itonami.blueprint/status :public-oss
- :itonami.blueprint/maturity :implemented}
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "ClinicAdvisor ⊣ Governor, real langgraph-clj StateGraph
+ (langgraph.graph, clinicops.operation/build -- replaces the prior
+ inert `make-graph` `{:nodes {} :edges {}}` data map that no code ever
+ traversed, and the `process-request` `cond` that never touched
+ langgraph despite this repo's docstrings claiming StateGraph
+ orchestration), append-only audit ledger (clinicops.store/audit-log +
+ append-audit, MemStore -- now atom-backed so an append is visible to
+ every holder of the store, previously a plain-vector `update` that
+ produced an unobserved new record -- and a new DatomicStore backed by
+ langchain.db via langchain-store.core). An ADMINISTRATIVE/FACILITY
+ COORDINATION ONLY actor for outpatient clinics -- no clinical
+ authority or decision-making power whatsoever. Five ops, all
+ `:effect :propose` only. Three HARD invariants
+ (appointment-unverified, effect-not-propose, scope-exclusion via a
+ maximally conservative EN+JA clinical-content scan) plus a
+ confidence/always-escalate soft gate gate every proposal.
+ `:flag-safety-concern` never auto-commits at any rollout phase, so it
+ always routes through the compiled graph's `:request-approval` node
+ (`interrupt-before`, checkpoint-based resume). Every commit/hold/
+ approval-rejected decision lands in the append-only ledger --
+ `process-request` is kept as a backward-compatible wrapper around the
+ real compiled graph so every pre-existing caller/test keeps its exact
+ return shape. 15 tests / 112 assertions green (`clojure -M:dev:test`),
+ demo runnable end-to-end (`clojure -M:dev:run`)."}
