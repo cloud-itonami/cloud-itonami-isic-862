@@ -2,7 +2,24 @@
 
 **ISIC-862: Medical and dental practice activities — outpatient clinic coordination actor**
 
-A langgraph-clj StateGraph actor for outpatient clinic (doctor/dentist office) back-office operations coordination. This is an **administrative/facility coordination actor only** — it has no clinical authority or decision-making power whatsoever.
+**Maturity: `:implemented`.** `src/clinicops/` implements the `ClinicAdvisor`
+(`clinicops.advisor`, a real `Advisor` protocol + `MockAdvisor`) and the
+independent Governor (`clinicops.governor`), composed by `clinicops.operation`
+following the itonami actor pattern: `intake -> advise -> govern -> decide ->
+commit | request-approval -> commit | hold`, compiled to a real
+`langgraph-clj` `StateGraph` (`langgraph.graph/state-graph` + `compile-graph`,
+mirroring `cerealops.operation`, cloud-itonami-isic-0111) with
+`interrupt-before #{:request-approval}` and checkpoint-based human-in-the-loop
+resume for escalated operations. Every commit/hold/approval-rejected decision
+fact is appended to `clinicops.store`'s append-only audit ledger
+(`audit-log`/`append-audit`), implemented on both `MemStore` (now atom-backed)
+and a `DatomicStore` (backed by `langchain.db` via `kotoba-lang/langchain-store`)
+that pass the same store-contract test (`test/clinicops/store_contract_test.clj`).
+15 tests / 112 assertions green (`clojure -M:dev:test`); the demo runner
+(`clojure -M:dev:run`) drives the actor through commit, escalate, and
+hard-hold paths, printing each decision.
+
+This is an **administrative/facility coordination actor only** — it has no clinical authority or decision-making power whatsoever.
 
 ## Scope
 
@@ -26,11 +43,20 @@ This actor coordinates the logistics and administration of clinic operations:
 
 ## Module Architecture
 
-- **`clinicops.store`** — append-only audit ledger and source-of-truth for appointments, providers, and resources (MemStore for demo, backend connectors in production)
-- **`clinicops.advisor`** — LLM-backed intelligence node that drafts proposals (deterministic mock for demo, real LLM in production)
-- **`clinicops.governor`** — independent governance layer enforcing three HARD checks and scope exclusions (never trusts advisor)
-- **`clinicops.phase`** — 0→3 rollout policy (phase 0: read-only, phase 3: supervised auto-commit for 4 non-safety ops with always-escalating safety concerns)
-- **`clinicops.operation`** — langgraph-clj StateGraph orchestrating intake → advise → govern → decide → commit | hold | escalate
+- **`clinicops.store`** — `Store` protocol: appointment/provider directory + append-only
+  audit ledger, implemented by `MemStore` (in-memory, default) and `DatomicStore`
+  (`langchain.db`-backed, via `kotoba-lang/langchain-store`)
+- **`clinicops.advisor`** — `Advisor` protocol + `MockAdvisor` (deterministic mock for
+  demo; a real-LLM `Advisor` implementation is the documented next seam, same as
+  every sibling cloud-itonami actor's advisor)
+- **`clinicops.governor`** — independent governance layer enforcing three HARD checks
+  and scope exclusions (never trusts the advisor)
+- **`clinicops.phase`** — 0→3 rollout policy (phase 0: read-only, phase 3: supervised
+  auto-commit for 4 non-safety ops with always-escalating safety concerns)
+- **`clinicops.operation`** — compiles the `langgraph-clj` `StateGraph`: advise → govern
+  → decide → commit | request-approval → commit | hold, with `interrupt-before` +
+  checkpoint-based resume for escalated operations. `process-request` is kept as a
+  backward-compatible convenience wrapper around the compiled graph.
 - **`clinicops.sim`** — demo driver exercising all scenarios
 
 ## Three HARD Checks (Permanent, Un-Overridable)
@@ -49,26 +75,40 @@ This actor coordinates the logistics and administration of clinic operations:
 ## Build & Test
 
 ```bash
-# Install dependencies (requires nearby orgs/kotoba-lang/langgraph-clj and others)
-clojure -M:deps
+# Run tests (langgraph/langchain-store resolved via local sibling checkouts)
+clojure -M:dev:test
 
-# Run tests
-clojure -M:test
-
-# Run linter
+# Run the linter (clj-kondo, 0 errors)
 clojure -M:lint
 
-# Run demo
-clojure -M:run
+# Run the demo -- drives the compiled StateGraph end-to-end
+clojure -M:dev:run
 ```
+
+`:dev` pins the transitive `langchain` dependency to the in-monorepo local
+checkout (`../../kotoba-lang/langchain`) for offline workspace development;
+a standalone fork should override `deps.edn`'s `:local/root` coordinates
+with git coordinates (see `deps.edn`'s own comment).
 
 ## Demo Output
 
 The demo (`clinicops.sim/-main`) exercises:
 - Phase 3 auto-commit for all 4 non-safety operations
 - Phase 3 always-escalating safety-concern flag
-- All HARD-hold scenarios: unregistered appointment, wrong `:effect`, scope-excluded clinical content
+- HARD-hold scenarios: unregistered appointment, scope-excluded clinical content
 - Phase 1 approval-gating for all operations
+
+Every commit/escalate/hold decision in the demo appends a real fact to the
+Store's audit ledger (`clinicops.store/audit-log`) via the compiled graph's
+`:commit`/`:hold` nodes.
+
+## Human-in-the-loop resume
+
+`process-request` is a backward-compatible wrapper that runs the compiled
+graph to completion (or first interrupt) in one call. For a genuine
+approve/reject resume cycle, use `clinicops.operation/build` +
+`langgraph.graph/run*` directly — see [`docs/operator-guide.md`](docs/operator-guide.md)
+and `test/clinicops/operation_graph_test.clj`.
 
 ## Differences from isic-861 (Hospital Coordination)
 
@@ -83,7 +123,8 @@ While both hospitals (861) and outpatient clinics (862) are clinically-central i
 - ADR-2607152700: Cloud-itonami ISIC-873 Residential Care Coordination
 - ADR-2607121000: Cloud-itonami Wave Definition (outpatient clinics in Wave 4)
 - ADR-2607152500: Wave 4 Rollout Amendment (quality guardrails)
+- Skill `build-actor` (actor pattern, langgraph-clj StateGraph, Governor)
 
 ## License
 
-EPL-2.0 (matching cloud-itonami fleet governance)
+AGPL-3.0-or-later.
