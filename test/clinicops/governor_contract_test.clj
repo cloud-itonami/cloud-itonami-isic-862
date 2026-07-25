@@ -78,9 +78,8 @@
         (is (= :held (:status result)))
         (is (seq (:violations result)))))))
 
-(deftest legitimate-facility-safety-concern-is-not-scope-excluded
-  "Verify that a legitimate facility safety concern (e.g. elevator down)
-  does NOT trigger scope-exclusion, even though clinics are clinically central."
+(deftest ^{:doc "Verify that a legitimate facility safety concern (e.g. elevator down)
+  does NOT trigger scope-exclusion, even though clinics are clinically central."} legitimate-facility-safety-concern-is-not-scope-excluded
   (let [advisor-inst (advisor/mock-advisor)
         gov-inst (governor/make-governor)
         store-inst (store/demo-store)
