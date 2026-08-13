@@ -6,6 +6,13 @@
  ;; inside the monorepo checkout -- a standalone fork should override them
  ;; with git coordinates. Mirrors cloud-itonami-isic-0111 (cerealops).
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        ;; DADS (デジタル庁デザインシステム) skin for the build-time
+        ;; operator console (`clinicops.render-html`). :git/sha, not
+        ;; :local/root -- a :local/root here would be resolved relative to
+        ;; the consumer's git cache and break outside the monorepo.
+        io.github.kotoba-lang/jp-go-digital-design-system
+        {:git/url "https://github.com/kotoba-lang/jp-go-digital-design-system"
+         :git/sha "83db99546eabc53613ae826ea41d1533a3c574af"}
         io.github.kotoba-lang/langgraph
         {:local/root "../../kotoba-lang/langgraph"}
         ;; langchain-store: the shared langchain.db store seam (EDN-blob
@@ -34,4 +41,11 @@
 
   ;; clojure -M:dev:run  -> drive the demo through one OperationActor
   :run
-  {:main-opts ["-m" "clinicops.sim"]}}}
+  {:main-opts ["-m" "clinicops.sim"]}
+
+  ;; clojure -M:dev:render-html [out-file] -> regenerate
+  ;; docs/samples/operator-console.html by ACTUALLY running the compiled
+  ;; StateGraph (flagship checklist item 2). Refuses to write the file if
+  ;; the run produces zero HARD governor holds.
+  :render-html
+  {:main-opts ["-m" "clinicops.render-html"]}}}
