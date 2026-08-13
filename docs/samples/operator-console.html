@@ -2537,7 +2537,7 @@ img,svg { max-width: 100%; height: auto; }</style></head><body>
     <table>
       <thead><tr><th>#</th><th>Scenario</th><th>Kind</th><th>Decided by</th><th>Violations</th><th>Ledger facts</th></tr></thead>
       <tbody>
-        <tr><td><code>S06</code></td><td>Facility safety flag -&gt; human REJECTED</td><td><span class="warn">human rejected at approval</span></td><td><code>human-02</code></td><td><span class="muted">none (empty)</span></td><td>1</td></tr>
+        <tr><td><code>S06</code></td><td>Facility safety flag -&gt; human REJECTED</td><td><span class="warn">human rejected at approval</span></td><td><code>human-01</code></td><td><span class="muted">none (empty)</span></td><td>1</td></tr>
         <tr><td><code>S07</code></td><td>Appointment reschedule at phase 1 (rollout gate, left pending)</td><td><span class="warn">phase-1 rollout gate &middot; paused at <code>request-approval</code></span></td><td><span class="muted">awaiting a human</span></td><td><span class="muted">none (empty)</span></td><td>0</td></tr>
       </tbody>
     </table>
@@ -2550,7 +2550,7 @@ img,svg { max-width: 100%; height: auto; }</style></head><body>
       <tbody>
         <tr><td><code>S05</code></td><td>Facility safety flag -&gt; human APPROVED</td><td><code>approved by human-01</code></td><td><code>by = human-01</code></td><td><span class="critical">absent</span> <span class="muted">(audit only &mdash; not retained on record)</span></td></tr>
         <tr><td><code>S13</code></td><td>Low-confidence proposal -&gt; soft gate -&gt; human APPROVED</td><td><code>approved by human-01</code></td><td><code>by = human-01</code></td><td><span class="critical">absent</span> <span class="muted">(audit only &mdash; not retained on record)</span></td></tr>
-        <tr><td><code>S06</code></td><td>Facility safety flag -&gt; human REJECTED</td><td><code>rejected by human-02</code></td><td><code>by = human-02</code></td><td><span class="ok"><code>by = human-02</code></span></td></tr>
+        <tr><td><code>S06</code></td><td>Facility safety flag -&gt; human REJECTED</td><td><code>rejected by human-01</code></td><td><code>by = human-01</code></td><td><span class="ok"><code>by = human-01</code></span></td></tr>
       </tbody>
     </table>
   </section>
@@ -2579,7 +2579,7 @@ img,svg { max-width: 100%; height: auto; }</style></head><body>
         <tr><td>3</td><td><span class="ok">proposal-committed</span></td><td><code>coordinate-supply-request</code></td><td><span class="muted">&mdash;</span></td><td>confidence 0.9</td></tr>
         <tr><td>4</td><td><span class="ok">proposal-committed</span></td><td><code>schedule-staff-shift-proposal</code></td><td><span class="muted">&mdash;</span></td><td>confidence 0.86</td></tr>
         <tr><td>5</td><td><span class="ok">proposal-committed</span></td><td><code>flag-safety-concern</code></td><td><span class="muted">&mdash;</span></td><td>confidence 0.87</td></tr>
-        <tr><td>6</td><td><span class="critical">approval-rejected</span></td><td><code>flag-safety-concern</code></td><td><code>human-02</code></td><td></td></tr>
+        <tr><td>6</td><td><span class="critical">approval-rejected</span></td><td><code>flag-safety-concern</code></td><td><code>human-01</code></td><td></td></tr>
         <tr><td>7</td><td><span class="critical">proposal-rejected</span></td><td><code>schedule-appointment</code></td><td><span class="muted">&mdash;</span></td><td>appointment-unverified</td></tr>
         <tr><td>8</td><td><span class="critical">proposal-rejected</span></td><td><code>schedule-appointment</code></td><td><span class="muted">&mdash;</span></td><td>scope-exclusion</td></tr>
         <tr><td>9</td><td><span class="critical">proposal-rejected</span></td><td><code>schedule-appointment</code></td><td><span class="muted">&mdash;</span></td><td>scope-exclusion</td></tr>

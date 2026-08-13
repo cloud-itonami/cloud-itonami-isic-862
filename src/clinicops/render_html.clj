@@ -116,7 +116,10 @@
 
    {:id "S06" :phase 3 :appt-id "appt-002" :advisor :mock
     :request {:op :flag-safety-concern :patch {:concern "waiting room floor spill"}}
-    :approval {:status :rejected :by "human-02"}
+    ;; Same operator id the repo's own `operation_graph_test.clj` uses for
+    ;; both its approve and its reject fixture -- so every identifier that
+    ;; reaches the page traces back to code in this repo.
+    :approval {:status :rejected :by "human-01"}
     :label "Facility safety flag -> human REJECTED"}
 
    {:id "S07" :phase 1 :appt-id "appt-001" :advisor :mock
@@ -297,7 +300,7 @@
     "<span class=\"warn\">paused at :request-approval</span>"
 
     (:approval run)
-    (str "<span class=\"ok\">approved &amp; committed</span>")
+    "<span class=\"ok\">approved &amp; committed</span>"
 
     (= :commit (:disposition run))
     "<span class=\"ok\">auto-committed</span>"
@@ -454,7 +457,7 @@
                    (code (str (kw->s (get-in run [:approval :status])) " by "
                               (get-in run [:approval :by])))
                    (if graph-approver
-                     (str (code (str (kw->s (first graph-approver)) " = " (second graph-approver))))
+                     (code (str (kw->s (first graph-approver)) " = " (second graph-approver)))
                      "<span class=\"muted\">absent</span>")
                    (if record-approver
                      (str "<span class=\"ok\">" (code (str (kw->s (first record-approver)) " = "
