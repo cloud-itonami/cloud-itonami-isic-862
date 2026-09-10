@@ -14,7 +14,7 @@ resume for escalated operations. Every commit/hold/approval-rejected decision
 fact is appended to `clinicops.store`'s append-only audit ledger
 (`audit-log`/`append-audit`), implemented on both `MemStore` (now atom-backed)
 and a `DatomicStore` (backed by `langchain.db` via `kotoba-lang/langchain-store`)
-that pass the same store-contract test (`test/clinicops/store_contract_test.clj`).
+that pass the same store-contract test (`test/clinicops/store_contract_test.kotoba`).
 15 tests / 112 assertions green (`clojure -M:dev:test`); the demo runner
 (`clojure -M:dev:run`) drives the actor through commit, escalate, and
 hard-hold paths, printing each decision.
@@ -108,7 +108,7 @@ Store's audit ledger (`clinicops.store/audit-log`) via the compiled graph's
 graph to completion (or first interrupt) in one call. For a genuine
 approve/reject resume cycle, use `clinicops.operation/build` +
 `langgraph.graph/run*` directly — see [`docs/operator-guide.md`](docs/operator-guide.md)
-and `test/clinicops/operation_graph_test.clj`.
+and `test/clinicops/operation_graph_test.kotoba`.
 
 ## Differences from isic-861 (Hospital Coordination)
 

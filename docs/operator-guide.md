@@ -152,7 +152,7 @@ integration:
 Implementations include in-memory `MemStore` (default, `clinicops.store`)
 and `DatomicStore` (`langchain.db`-backed via `kotoba-lang/langchain-store`,
 the same seam point all cloud-itonami actors use) -- both pass the same
-store-contract test (`test/clinicops/store_contract_test.clj`).
+store-contract test (`test/clinicops/store_contract_test.kotoba`).
 
 ## Safety Guarantees
 
