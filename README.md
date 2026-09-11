@@ -15,8 +15,8 @@ fact is appended to `clinicops.store`'s append-only audit ledger
 (`audit-log`/`append-audit`), implemented on both `MemStore` (now atom-backed)
 and a `DatomicStore` (backed by `langchain.db` via `kotoba-lang/langchain-store`)
 that pass the same store-contract test (`test/clinicops/store_contract_test.kotoba`).
-15 tests / 112 assertions green (`clojure -M:dev:test`); the demo runner
-(`clojure -M:dev:run`) drives the actor through commit, escalate, and
+15 tests / 112 assertions green (`kbb -M:dev:test`); the demo runner
+(`kbb -M:dev:run`) drives the actor through commit, escalate, and
 hard-hold paths, printing each decision.
 
 This is an **administrative/facility coordination actor only** — it has no clinical authority or decision-making power whatsoever.
@@ -76,13 +76,13 @@ This actor coordinates the logistics and administration of clinic operations:
 
 ```bash
 # Run tests (langgraph/langchain-store resolved via local sibling checkouts)
-clojure -M:dev:test
+kbb -M:dev:test
 
 # Run the linter (clj-kondo, 0 errors)
-clojure -M:lint
+kbb -M:lint
 
 # Run the demo -- drives the compiled StateGraph end-to-end
-clojure -M:dev:run
+kbb -M:dev:run
 ```
 
 `:dev` pins the transitive `langchain` dependency to the in-monorepo local

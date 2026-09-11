@@ -16,9 +16,9 @@ This project uses `.cljc` (portable Clojure/ClojureScript) and the `clojure` CLI
 ### Development Workflow
 
 1. Edit files in `src/clinicops/`
-2. Run tests: `clojure -M:dev:test`
-3. Run the linter: `clojure -M:lint`
-4. Run the demo: `clojure -M:dev:run`
+2. Run tests: `kbb -M:dev:test`
+3. Run the linter: `kbb -M:lint`
+4. Run the demo: `kbb -M:dev:run`
 5. Commit and push to a feature branch
 6. Submit a pull request
 
@@ -35,7 +35,7 @@ This project uses `.cljc` (portable Clojure/ClojureScript) and the `clojure` CLI
 
 All changes must pass:
 - Unit tests in `test/clinicops/`
-- The demo scenarios in `clinicops.sim/-main` (`clojure -M:dev:run`)
+- The demo scenarios in `clinicops.sim/-main` (`kbb -M:dev:run`)
 
 ## Governance
 
