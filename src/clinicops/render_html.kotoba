@@ -59,7 +59,7 @@
        for an approver key, so the page self-corrects if the store is
        fixed.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -536,7 +536,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>What this page is</h2>\n"
-     "    <p>Generated at build time by <code>clinicops.render-html</code> (<code>clojure -M:dev:render-html</code>) by "
+     "    <p>Generated at build time by <code>clinicops.render-html</code> (<code>kbb -M:dev:render-html</code>) by "
      "actually running <code>clinicops.operation/build</code> &mdash; a compiled <code>langgraph</code> StateGraph &mdash; "
      "over the seeded <code>clinicops.store</code>. Every appointment, provider, disposition, violation rule, violation "
      "detail and ledger fact below was read back out of that run. Nothing is hand-written sample data.</p>\n"
@@ -559,7 +559,7 @@
      "</main>\n"
      "<footer>\n"
      "  <p>cloud-itonami-isic-862 &middot; clinicops &middot; AGPL-3.0-or-later. "
-     "Regenerate with <code>clojure -M:dev:render-html</code>. Deterministic: no timestamps are rendered, so two "
+     "Regenerate with <code>kbb -M:dev:render-html</code>. Deterministic: no timestamps are rendered, so two "
      "runs against the same seed are byte-identical.</p>\n"
      "</footer>\n"
      "</body></html>\n")))

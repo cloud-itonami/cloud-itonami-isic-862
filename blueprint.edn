@@ -32,5 +32,5 @@
  approval-rejected decision lands in the append-only ledger --
  `process-request` is kept as a backward-compatible wrapper around the
  real compiled graph so every pre-existing caller/test keeps its exact
- return shape. 15 tests / 112 assertions green (`clojure -M:dev:test`),
- demo runnable end-to-end (`clojure -M:dev:run`)."}
+ return shape. 15 tests / 112 assertions green (`kbb -M:dev:test`),
+ demo runnable end-to-end (`kbb -M:dev:run`)."}

@@ -2469,7 +2469,7 @@ img,svg { max-width: 100%; height: auto; }</style></head><body>
 <main>
   <section class="card">
     <h2>What this page is</h2>
-    <p>Generated at build time by <code>clinicops.render-html</code> (<code>clojure -M:dev:render-html</code>) by actually running <code>clinicops.operation/build</code> &mdash; a compiled <code>langgraph</code> StateGraph &mdash; over the seeded <code>clinicops.store</code>. Every appointment, provider, disposition, violation rule, violation detail and ledger fact below was read back out of that run. Nothing is hand-written sample data.</p>
+    <p>Generated at build time by <code>clinicops.render-html</code> (<code>kbb -M:dev:render-html</code>) by actually running <code>clinicops.operation/build</code> &mdash; a compiled <code>langgraph</code> StateGraph &mdash; over the seeded <code>clinicops.store</code>. Every appointment, provider, disposition, violation rule, violation detail and ledger fact below was read back out of that run. Nothing is hand-written sample data.</p>
     <p class="muted">This actor coordinates clinic <em>logistics</em>: appointment slots, referral paperwork, non-clinical consumables, administrative shifts and facility safety flags. Diagnosis, treatment, medication, clinical procedures, patient assessment, triage, discharge and end-of-life decisions are permanently out of scope &mdash; not un-implemented, but HARD-blocked by the governor's maximally conservative scope scan.</p>
     <p><strong>13</strong> scenarios &middot; <strong>5</strong> HARD governor holds covering <strong>4</strong> distinct rules (appointment-unverified, effect-not-propose, op-not-allowed, scope-exclusion) &middot; <strong>12</strong> ledger facts. The build refuses to write this file if the run produces zero HARD holds.</p>
   </section>
@@ -2591,6 +2591,6 @@ img,svg { max-width: 100%; height: auto; }</style></head><body>
   </section>
 </main>
 <footer>
-  <p>cloud-itonami-isic-862 &middot; clinicops &middot; AGPL-3.0-or-later. Regenerate with <code>clojure -M:dev:render-html</code>. Deterministic: no timestamps are rendered, so two runs against the same seed are byte-identical.</p>
+  <p>cloud-itonami-isic-862 &middot; clinicops &middot; AGPL-3.0-or-later. Regenerate with <code>kbb -M:dev:render-html</code>. Deterministic: no timestamps are rendered, so two runs against the same seed are byte-identical.</p>
 </footer>
 </body></html>
