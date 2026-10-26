@@ -36,7 +36,7 @@
   :dev
   {:override-deps
    {io.github.kotoba-lang/langchain
-    {:local/root "../../kotoba-lang/langchain"}}}
+        {:local/root "../../kotoba-lang/kotoba/lib/kotoba.langchain"}}}
 
   :test
   {:extra-paths ["test"]
